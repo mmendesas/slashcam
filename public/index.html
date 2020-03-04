@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,26 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 </head>
+
 <body>
-  <h1>SlashCAM</h1>
+  <div id="container">
+    <header>
+      <h1>SlashCAM</h1>
+    </header>
+    <main>
+      <div class="active-users">
+        draw active users list here
+      </div>
+      <div class="chat-container">
+
+        <div class="video-container">
+          <video id="local-video" autoplay playsinline muted ></video>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
+
 </html>
