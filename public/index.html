@@ -6,25 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SlashCam</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 </head>
 
 <body>
-  <div id="container">
+  <div class="container">
     <header>
-      <h1>SlashCAM</h1>
+      <h1>Slash Camera</h1>
     </header>
-    <main>
-      <div class="active-users">
-        draw active users list here
-      </div>
-      <div class="chat-container">
-
-        <div class="video-container">
-          <video id="local-video" autoplay playsinline muted ></video>
+    <main class="content">
+      <section class="messages">
+        <h3 class="title">Messages</h3>
+      </section>
+      <section class="content">
+        <div class="remote-info">
+          <video id="remote-video" autoplay></video>
         </div>
-      </div>
+        <div class="local-info">
+          <video id="local-video" autoplay playsinline muted></video>
+          <section class="messages-container">
+            <h3 class="title">Active users</h3>
+          </section>
+        </div>
+      </section>
+      </section>
     </main>
   </div>
 
