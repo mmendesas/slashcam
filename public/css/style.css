@@ -51,7 +51,7 @@ input {
   width: 250px;
   border: 1px solid #ddd;
   height: 32px;
-  padding: 0 20px;
+  padding: 0 10px;
   font-size: 14px;
   color: #eee
 }
@@ -79,6 +79,10 @@ button:hover {
   border: 1px solid #ddd;
   padding: 5px;
   margin: 10px 0;
+}
+
+.message {
+  margin: 10px;
 }
 
 .remote-info {
