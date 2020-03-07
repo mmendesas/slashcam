@@ -37,8 +37,48 @@ header {
   justify-content: center;
 }
 
+/* MESSAGES */
 .messages {
   width: 300px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+input {
+  background-color: rgba(0,0,0, 0.3);
+  width: 250px;
+  border: 1px solid #ddd;
+  height: 32px;
+  padding: 0 20px;
+  font-size: 14px;
+  color: #eee
+}
+
+button {
+  height: 32px;
+  width: 250px;
+  color: #fff;
+  background-color: darkgreen;
+  border:0;
+  border-radius: 4px;
+  margin-top: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.all-messages {
+  background-color: rgba(0,0,0, 0.3);
+  height: 400px;
+  width: 250px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin: 10px 0;
 }
 
 .remote-info {
