@@ -43,9 +43,13 @@ class App {
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
-      socket.on('sendMessage', data => {
+      // on connection update own messages
+      socket.emit('previous-messages', messages);
+
+      // listener to send-message called from front
+      socket.on('send-message', data => {
         messages.push(data);
-        console.log('receivedMsg', data);
+        socket.broadcast.emit('received-message', data);
       });
     });
   }

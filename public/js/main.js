@@ -16,13 +16,10 @@ function renderMessage(message) {
   $('.all-messages').appendChild(div);
 }
 
-function startClient() {
-  // open connection with server
-  const socket = io('http://localhost:3000');
-
+function handleMessages(socket) {
   // handle message sent
   const form = document.getElementById('chat');
-  form.addEventListener('submit', function(event) {
+  form.addEventListener('submit', event => {
     event.preventDefault();
 
     const user = $('#username').value;
@@ -31,30 +28,60 @@ function startClient() {
     if (user.length && msg.length) {
       const msgObject = { user, msg };
       renderMessage(msgObject);
-      socket.emit('sendMessage', msgObject);
+
+      // send message to broadcast
+      socket.emit('send-message', msgObject);
     }
+  });
+
+  // render received messages
+  socket.on('received-message', data => {
+    renderMessage(data);
+  });
+
+  // render old messages in page reload F5
+  socket.on('previous-messages', data => {
+    data.map(msg => renderMessage(msg));
   });
 }
 
-function handleSuccess(stream) {
-  // const localVideo = document.getElementById('local-video');
-  if (localVideo) {
-    localVideo.srcObject = stream;
-  }
-}
+// peerconnection
+const peer = new RTCPeerConnection();
 
-function handleError(error) {
-  console.log(
-    'navigator.MediaDevices.getUserMedia error: ',
-    error.message,
-    error.name
+function handleVideo(socket) {
+  function handleSuccess(stream) {
+    const localVideo = document.getElementById('local-video');
+    if (localVideo) {
+      localVideo.srcObject = stream;
+    }
+
+    // add caller track to peer
+    stream.getTracks().forEach(track => peer.addTrack(track, stream));
+  }
+
+  function handleError(error) {
+    console.log(
+      'navigator.MediaDevices.getUserMedia error: ',
+      error.message,
+      error.name
+    );
+  }
+
+  navigator.getUserMedia(
+    { video: true, audio: true },
+    stream => handleSuccess(stream),
+    error => handleError(error)
   );
 }
 
-navigator.getUserMedia(
-  { video: true, audio: true },
-  stream => handleSuccess(stream),
-  error => handleError(error)
-);
+async function start() {
+  // open connection with server
+  const socket = io('http://localhost:3000');
 
-document.onload = startClient();
+  handleMessages(socket);
+
+  handleVideo(socket);
+}
+
+// start on page load
+document.onload = start();
