@@ -24,7 +24,7 @@ body {
 }
 
 section{
-  border: 1px dashed white;
+  border: 1px dashed rgba(255,255,255, 0.8);
   padding: 20px;
 }
 
@@ -60,7 +60,7 @@ button {
   height: 32px;
   width: 250px;
   color: #fff;
-  background-color:  rgb(5, 172, 172);;
+  background-color:  rgb(5, 172, 172);
   border:0;
   border-radius: 4px;
   margin-top: 10px;
@@ -121,14 +121,14 @@ button:hover {
 }
 
 #local-video {
-  border: 1px solid green;
+  border: 3px solid rgb(5, 172, 172);
   /* position: absolute; */
   width: 300px;
   /* bottom: 3px; */
 }
 
 #remote-video {
-  border: 1px solid red;
-  width: 700px;
+  border: 2px solid rgb(186, 240, 240);
+  width: 670px;
   height: 500px;
 }
