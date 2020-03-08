@@ -44,8 +44,21 @@ class App {
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
-      // add current user
-      activeUsers.push(socket.id);
+      const exists = activeUsers.find(user => user === socket.id);
+      if (!exists) {
+        // add current user
+        activeUsers.push(socket.id);
+
+        // broadcast connected user
+        socket.broadcast.emit('active-users', {
+          users: [socket.id],
+        });
+
+        // local emit without current user
+        socket.emit('active-users', {
+          users: activeUsers.filter(user => user !== socket.id),
+        });
+      }
 
       // on connection update own messages
       socket.emit('previous-messages', messages);
@@ -56,21 +69,19 @@ class App {
         socket.broadcast.emit('received-message', data);
       });
 
-      // broadcast connected user
-      socket.broadcast.emit('active-users', {
-        users: [socket.id],
-      });
-
-      // local emit without current user
-      socket.emit('active-users', {
-        users: activeUsers,
+      // handle offer
+      socket.on('call-user', data => {
+        // emit to front
+        socket.to(data.to).emit('call-made', {
+          offer: data.offer,
+          socket: socket.id,
+        });
       });
 
       // handle disconnection
       socket.on('disconnect', () => {
         // update current list
         activeUsers = activeUsers.filter(item => item !== socket.id);
-
         socket.broadcast.emit('delete-user', socket.id);
       });
     });

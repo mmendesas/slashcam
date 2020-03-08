@@ -67,6 +67,16 @@ function handleVideo(socket) {
     );
   }
 
+  async function callUser(id) {
+    const offer = await peer.createOffer();
+    await peer.setLocalDescription(new RTCSessionDescription(offer));
+
+    socket.emit('call-user', {
+      offer,
+      to: id,
+    });
+  }
+
   function createUserElement(id) {
     const div = document.createElement('div');
     div.setAttribute('id', id);
@@ -79,6 +89,9 @@ function handleVideo(socket) {
 
     div.addEventListener('click', () => {
       div.classList.add('active--selected');
+
+      // call active user
+      callUser(id);
     });
 
     return div;
@@ -108,6 +121,13 @@ function handleVideo(socket) {
     }
   });
 
+  socket.on('call-made', async data => {
+    await peer.setRemoteDescription(new RTCSessionDescription(data.offer));
+    const answer = await peer.createAnswer();
+    await peer.setLocalDescription(new RTCSessionDescription(answer));
+  });
+
+  // start localstream
   navigator.getUserMedia(
     { video: true, audio: true },
     stream => handleSuccess(stream),
