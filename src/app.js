@@ -7,6 +7,7 @@ const path = require('path');
 const routes = require('./routes');
 
 const messages = [];
+const activeUsers = [];
 
 class App {
   constructor() {
@@ -43,6 +44,9 @@ class App {
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
+      // add current user
+      activeUsers.push(socket.id);
+
       // on connection update own messages
       socket.emit('previous-messages', messages);
 
@@ -50,6 +54,16 @@ class App {
       socket.on('send-message', data => {
         messages.push(data);
         socket.broadcast.emit('received-message', data);
+      });
+
+      // broadcast connected user
+      socket.broadcast.emit('active-users', {
+        users: [socket.id],
+      });
+
+      // local emit without current user
+      socket.emit('active-users', {
+        users: activeUsers,
       });
     });
   }

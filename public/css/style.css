@@ -99,10 +99,25 @@ button:hover {
   text-align: center;
 }
 
-.messages-container {
+.users-container {
   margin-top: 20px;
   width: 300px;
   height: 100%;
+}
+
+.active-user {
+  padding: 5px 10px;
+  margin: 10px 0;
+  border-radius: 20px;
+}
+
+.active-user:hover {
+  background-color: rgb(186, 240, 240);
+}
+
+.active {
+  background-color: rgb(5, 172, 172);
+  color: #fff;
 }
 
 #local-video {

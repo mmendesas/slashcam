@@ -67,6 +67,40 @@ function handleVideo(socket) {
     );
   }
 
+  function createUserElement(id) {
+    const div = document.createElement('div');
+    div.setAttribute('id', id);
+    div.setAttribute('class', 'active-user');
+
+    const p = document.createElement('p');
+    p.appendChild(document.createTextNode(`user: ${id}`));
+
+    div.appendChild(p);
+
+    div.addEventListener('click', () => {
+      div.classList.add('active');
+    });
+
+    return div;
+  }
+
+  function updateActiveUsers(users) {
+    const userList = $('.users-container');
+
+    users.forEach(user => {
+      const exists = document.getElementById(user);
+      if (!exists) {
+        const element = createUserElement(user);
+        userList.appendChild(element);
+      }
+    });
+  }
+
+  // update active users list
+  socket.on('active-users', ({ users }) => {
+    updateActiveUsers(users);
+  });
+
   navigator.getUserMedia(
     { video: true, audio: true },
     stream => handleSuccess(stream),
