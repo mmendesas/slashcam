@@ -7,7 +7,7 @@ const path = require('path');
 const routes = require('./routes');
 
 const messages = [];
-const activeUsers = [];
+let activeUsers = [];
 
 class App {
   constructor() {
@@ -64,6 +64,14 @@ class App {
       // local emit without current user
       socket.emit('active-users', {
         users: activeUsers,
+      });
+
+      // handle disconnection
+      socket.on('disconnect', () => {
+        // update current list
+        activeUsers = activeUsers.filter(item => item !== socket.id);
+
+        socket.broadcast.emit('delete-user', socket.id);
       });
     });
   }

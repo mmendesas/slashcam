@@ -78,7 +78,7 @@ function handleVideo(socket) {
     div.appendChild(p);
 
     div.addEventListener('click', () => {
-      div.classList.add('active');
+      div.classList.add('active--selected');
     });
 
     return div;
@@ -99,6 +99,13 @@ function handleVideo(socket) {
   // update active users list
   socket.on('active-users', ({ users }) => {
     updateActiveUsers(users);
+  });
+
+  socket.on('delete-user', id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.remove();
+    }
   });
 
   navigator.getUserMedia(
