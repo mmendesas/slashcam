@@ -67,6 +67,15 @@ function handleVideo(socket) {
     );
   }
 
+  function handleTrack() {
+    peer.ontrack = function({ streams: [stream] }) {
+      const remoteVideo = document.getElementById('remote-video');
+      if (remoteVideo) {
+        remoteVideo.srcObject = stream;
+      }
+    };
+  }
+
   async function callUser(id) {
     const offer = await peer.createOffer();
     await peer.setLocalDescription(new RTCSessionDescription(offer));
@@ -125,7 +134,19 @@ function handleVideo(socket) {
     await peer.setRemoteDescription(new RTCSessionDescription(data.offer));
     const answer = await peer.createAnswer();
     await peer.setLocalDescription(new RTCSessionDescription(answer));
+
+    socket.emit('make-answer', {
+      answer,
+      to: data.socket,
+    });
   });
+
+  socket.on('answer-made', async data => {
+    await peer.setRemoteDescription(new RTCSessionDescription(data.answer));
+  });
+
+  // start remotestream
+  handleTrack();
 
   // start localstream
   navigator.getUserMedia(
