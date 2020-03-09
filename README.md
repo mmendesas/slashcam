@@ -37,5 +37,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - **Marcio Mendes** - [mmendesas](https://github.com/mmendesas)
 
 ## References
+  - [Awesome blog post](https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/)
   - [WebRTC samples](https://webrtc.github.io/samples/)
   - [Getting started with WebRTC](https://www.html5rocks.com/en/tutorials/webrtc/basics/)
