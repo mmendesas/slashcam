@@ -2,20 +2,14 @@
 const express = require('express');
 const socketIO = require('socket.io');
 const { createServer } = require('http');
-const path = require('path');
-
-const routes = require('./routes');
 
 const messages = [];
 let activeUsers = [];
 
 class App {
-  constructor() {
+  constructor(handler) {
     this.init();
-
-    this.middlewares();
-    this.engine();
-    this.routes();
+    this.routes(handler);
   }
 
   init() {
@@ -26,18 +20,10 @@ class App {
     this.handleSocketConnection();
   }
 
-  middlewares() {
-    this.app.use(express.static(path.join(__dirname, '..', 'public')));
-  }
-
-  engine() {
-    this.app.set('views', path.join(__dirname, '..', 'public'));
-    this.app.engine('html', require('ejs').renderFile);
-    this.app.set('view engine', 'html');
-  }
-
-  routes() {
-    this.app.use(routes);
+  routes(handle) {
+    this.app.get('*', (req, res) => {
+      return handle(req, res);
+    });
   }
 
   handleSocketConnection() {
@@ -96,4 +82,4 @@ class App {
   }
 }
 
-module.exports = new App().server;
+module.exports = App;
