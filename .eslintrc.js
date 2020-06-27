@@ -4,8 +4,9 @@ module.exports = {
     es6: true,
   },
   extends: [
-    'airbnb-base',
-    'prettier'
+    'airbnb',
+    'prettier',
+    'prettier/react'
   ],
   globals: {
     Atomics: 'readonly',
@@ -13,12 +14,20 @@ module.exports = {
   },
   parser: 'babel-eslint',
   parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    },
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['prettier'],
+  plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
+    'no-param-reassign': 'off',
     'prettier/prettier': 'error',
-    'import/prefer-default-export': 'off'
+    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'import/prefer-default-export': 'off',
+    'react/jsx-one-expression-per-line': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   },
 };

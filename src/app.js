@@ -1,4 +1,5 @@
-/* eslint-disable global-require */
+/* eslint-disable no-console */
+
 const express = require('express');
 const socketIO = require('socket.io');
 const { createServer } = require('http');
@@ -27,6 +28,10 @@ class App {
   }
 
   handleSocketConnection() {
+    this.io.on('connect', socket => {
+      socket.emit('now', { id: socket.id, message: 'teste 123' });
+    });
+
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
