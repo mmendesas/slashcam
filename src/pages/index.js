@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import io from 'socket.io-client';
 
-import GlobalStyle from '../styles/global';
 import Header from '../components/Header';
 import Room from './Room';
 
@@ -23,7 +22,6 @@ function App() {
     <>
       <Header />
       <Room />
-      <GlobalStyle />
     </>
   );
 }
