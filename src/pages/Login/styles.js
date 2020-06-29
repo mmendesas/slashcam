@@ -18,13 +18,6 @@ export const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-export const Preview = styled.div`
-  width: 670px;
-  height: 401px;
-  background-color: #fae4c5;
-  border-radius: 20px;
-`;
-
 export const FormContent = styled.section`
   width: 400px;
   display: flex;
