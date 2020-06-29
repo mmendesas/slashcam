@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 
 import GlobalStyle from '../styles/global';
 import Header from '../components/Header';
+import Room from './Room';
 
 // open connection with server
 const socket = io('http://localhost:3000');
@@ -21,7 +22,7 @@ function App() {
   return (
     <>
       <Header />
-      <div>First Test</div>
+      <Room />
       <GlobalStyle />
     </>
   );
