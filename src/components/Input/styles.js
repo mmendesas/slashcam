@@ -15,5 +15,9 @@ export const Container = styled.div`
     padding: 0 15px;
     width: 200px;
     margin: 5px 10px;
+
+    ::placeholder {
+      color: #ccc;
+    }
   }
 `;
