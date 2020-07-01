@@ -10,5 +10,5 @@ export const Container = styled.button`
 
   font-size: 20px;
   font-weight: bold;
-  width: 100%;
+  width: ${props => props.width || '100%'};
 `;

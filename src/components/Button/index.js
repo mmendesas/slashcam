@@ -1,10 +1,15 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { string, func } from 'prop-types';
 
 import { Container } from './styles';
 
-function Button({ children, onClick }) {
-  return <Container onClick={onClick}>{children}</Container>;
+function Button({ children, onClick, ...props }) {
+  return (
+    <Container onClick={onClick} {...props}>
+      {children}
+    </Container>
+  );
 }
 
 Button.propTypes = {

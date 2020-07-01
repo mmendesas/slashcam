@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
+  display: flex;
+  flex-direction: column;
   width: 300px;
-  height: 400px;
-  border-radius: 20px;
   margin-right: 10px;
 `;
 
@@ -26,7 +26,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: 100%;
+  flex: 1;
   background-color: #fff7ec;
   padding: 10px;
 `;

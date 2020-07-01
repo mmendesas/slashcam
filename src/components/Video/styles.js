@@ -15,4 +15,10 @@ export const Options = styled.div`
   right: 20px;
   display: flex;
   justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.7s ease-out;
+
+  :hover {
+    opacity: 1;
+  }
 `;
