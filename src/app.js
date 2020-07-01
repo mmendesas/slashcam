@@ -57,6 +57,9 @@ class App {
       // listener to send-message called from front
       socket.on('send-message', data => {
         messages.push(data);
+
+        console.log('ASDFASDF', data);
+
         socket.broadcast.emit('received-message', data);
       });
 

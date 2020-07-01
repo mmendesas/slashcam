@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Container, Header, Text, Content, Footer } from './styles';
 
@@ -6,17 +6,16 @@ import Input from '../Input';
 import Button from '../Button';
 import Message from '../Message';
 
-const messages = [
-  { user: 'you', message: 'teste 123321' },
-  {
-    user: 'bill_murphy',
-    message: 'teste 123321 Groselha 123 asdffdsasdf',
-    remote: true,
-  },
-  { user: 'josh', message: 'teste 123321', remote: true },
-];
+function Chat({ messages = [], onSentMsg }) {
+  const [msg, setMsg] = useState('');
 
-function Chat() {
+  const handleSubmit = () => {
+    if (msg !== '') {
+      onSentMsg(msg);
+      setMsg('');
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -32,8 +31,13 @@ function Chat() {
         ))}
       </Content>
       <Footer>
-        <Input name="msgToSent" placeholder="Send a message to everyone..." />
-        <Button>Send</Button>
+        <Input
+          name="msgToSent"
+          onChange={e => setMsg(e.target.value)}
+          value={msg}
+          placeholder="Send a message to everyone..."
+        />
+        <Button onClick={handleSubmit}>Send</Button>
       </Footer>
     </Container>
   );
