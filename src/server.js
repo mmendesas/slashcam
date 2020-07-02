@@ -1,7 +1,17 @@
-const app = require('./app');
+/* eslint-disable no-console */
+const next = require('next');
+const App = require('./app');
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+const dev = process.env.NODE_ENV !== 'production';
+const nextApp = next({ dev });
+const handle = nextApp.getRequestHandler();
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+const { server } = new App(handle);
+
+nextApp.prepare().then(() => {
+  server.listen(PORT, err => {
+    if (err) throw err;
+    console.log(`Server listening on http://localhost:${PORT}`);
+  });
 });

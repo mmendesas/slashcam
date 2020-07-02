@@ -1,21 +1,16 @@
-/* eslint-disable global-require */
+/* eslint-disable no-console */
+
 const express = require('express');
 const socketIO = require('socket.io');
 const { createServer } = require('http');
-const path = require('path');
-
-const routes = require('./routes');
 
 const messages = [];
 let activeUsers = [];
 
 class App {
-  constructor() {
+  constructor(handler) {
     this.init();
-
-    this.middlewares();
-    this.engine();
-    this.routes();
+    this.routes(handler);
   }
 
   init() {
@@ -26,21 +21,17 @@ class App {
     this.handleSocketConnection();
   }
 
-  middlewares() {
-    this.app.use(express.static(path.join(__dirname, '..', 'public')));
-  }
-
-  engine() {
-    this.app.set('views', path.join(__dirname, '..', 'public'));
-    this.app.engine('html', require('ejs').renderFile);
-    this.app.set('view engine', 'html');
-  }
-
-  routes() {
-    this.app.use(routes);
+  routes(handle) {
+    this.app.get('*', (req, res) => {
+      return handle(req, res);
+    });
   }
 
   handleSocketConnection() {
+    this.io.on('connect', socket => {
+      socket.emit('now', { id: socket.id, message: 'teste 123' });
+    });
+
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
@@ -66,6 +57,9 @@ class App {
       // listener to send-message called from front
       socket.on('send-message', data => {
         messages.push(data);
+
+        console.log('ASDFASDF', data);
+
         socket.broadcast.emit('received-message', data);
       });
 
@@ -96,4 +90,4 @@ class App {
   }
 }
 
-module.exports = new App().server;
+module.exports = App;
