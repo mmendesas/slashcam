@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+
+import useSocket from '../../hooks/useSocket';
 
 import Chat from '../../components/Chat';
 import Video from '../../components/Video';
@@ -10,21 +11,7 @@ import { Container, Content, Bottom } from './styles';
 
 import OnlineUsers from '../../components/OnlineUsers';
 
-function useSocket(url) {
-  const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    const socketIO = io(url);
-    setSocket(socketIO);
-
-    return () => {
-      socketIO.disconnect();
-    }
-
-  }, []);
-
-  return socket;
-}
 
 const user = [
   { name: 'Josh', active: true },
@@ -32,24 +19,15 @@ const user = [
   { name: 'Bill', active: false },
 ];
 
-const fakeMsgs = [
-  { user: 'you', message: 'teste 123321' },
-  {
-    user: 'bill_murphy',
-    message: 'teste 123321 Groselha 123 asdffdsasdf',
-    remote: true,
-  },
-  { user: 'josh', message: 'teste 123321', remote: true },
-];
-
 function Room() {
-  const messages = useState(fakeMsgs);
+  const [messages, setMessages] = useState([]);
   const socket = useSocket('http://localhost:3000')
 
   useEffect(() => {
     if (socket) {
       socket.on('received-message', data => {
         console.log('message received:', data);
+        setMessages([...messages, data]);
       });
     }
   }, [socket]);

@@ -7,6 +7,8 @@ const { createServer } = require('http');
 const messages = [];
 let activeUsers = [];
 
+const chatRooms = ['games'];
+
 class App {
   constructor(handler) {
     this.init();
@@ -35,24 +37,35 @@ class App {
     this.io.on('connection', socket => {
       console.log(`Socket connected: ${socket.id}`);
 
+      socket.on('join_room', data => {
+        const { room, username } = data;
+        if (!chatRooms.includes(room)) {
+          return socket.emit('err', `Error, no room named: ${room}`);
+        }
+        socket.join(room);
+
+        // tell everyone in this room that we have new user
+        this.io.in(room).emit('user_joined', { room, username });
+      });
+
       const exists = activeUsers.find(user => user === socket.id);
       if (!exists) {
         // add current user
         activeUsers.push(socket.id);
 
-        // broadcast connected user
-        socket.broadcast.emit('active-users', {
-          users: [socket.id],
-        });
+        // // broadcast connected user
+        // socket.broadcast.emit('active-users', {
+        //   users: [socket.id],
+        // });
 
-        // local emit without current user
-        socket.emit('active-users', {
-          users: activeUsers.filter(user => user !== socket.id),
-        });
+        // // local emit without current user
+        // socket.emit('active-users', {
+        //   users: activeUsers.filter(user => user !== socket.id),
+        // });
       }
 
       // on connection update own messages
-      socket.emit('previous-messages', messages);
+      // socket.emit('previous-messages', messages);
 
       // listener to send-message called from front
       socket.on('send-message', data => {
