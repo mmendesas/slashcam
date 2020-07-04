@@ -14,11 +14,14 @@ function Message({ user, message, remote }) {
 
 Message.defaultProps = {
   remote: false,
+  user: '',
+  message: '',
+
 };
 
 Message.propTypes = {
-  user: string.isRequired,
-  message: string.isRequired,
+  user: string,
+  message: string,
   remote: bool,
 };
 

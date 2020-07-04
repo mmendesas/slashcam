@@ -18,7 +18,7 @@ function Login() {
           <Form>
             <Input label="your name:" name="username" />
             <Input label="room id:" name="room" />
-            <Button>Join room</Button>
+            <Button onClick={() => { }}>Join room</Button>
           </Form>
         </FormContent>
       </Content>

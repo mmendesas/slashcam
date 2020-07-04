@@ -8,7 +8,7 @@ function OnlineUsers({ users }) {
     <Container>
       <ul>
         {users.map(({ name, active }) => (
-          <User active={active}>
+          <User key={name} active={active}>
             <Badge />
             <span>{name}</span>
           </User>

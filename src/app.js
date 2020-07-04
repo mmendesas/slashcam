@@ -59,7 +59,6 @@ class App {
         messages.push(data);
 
         console.log('ASDFASDF', data);
-
         socket.broadcast.emit('received-message', data);
       });
 

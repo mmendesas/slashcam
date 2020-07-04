@@ -10,6 +10,7 @@ export const Content = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  display: none;
 `;
 
 export const Bottom = styled.div`

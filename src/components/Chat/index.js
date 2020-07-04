@@ -16,6 +16,12 @@ function Chat({ messages = [], onSentMsg }) {
     }
   };
 
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -26,14 +32,20 @@ function Chat({ messages = [], onSentMsg }) {
         <Text>room: 123</Text>
       </Header>
       <Content>
-        {messages.map(({ user, message, remote }) => (
-          <Message user={user} message={message} remote={remote} />
+        {messages.map(({ user, message, remote }, idx) => (
+          <Message
+            key={`${user}-${idx}`}
+            user={user}
+            message={message}
+            remote={remote}
+          />
         ))}
       </Content>
       <Footer>
         <Input
           name="msgToSent"
           onChange={e => setMsg(e.target.value)}
+          onKeyDown={handleKeyDown}
           value={msg}
           placeholder="Send a message to everyone..."
         />

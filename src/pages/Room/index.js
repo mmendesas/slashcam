@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 import Chat from '../../components/Chat';
@@ -10,13 +10,29 @@ import { Container, Content, Bottom } from './styles';
 
 import OnlineUsers from '../../components/OnlineUsers';
 
+function useSocket(url) {
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socketIO = io(url);
+    setSocket(socketIO);
+
+    return () => {
+      socketIO.disconnect();
+    }
+
+  }, []);
+
+  return socket;
+}
+
 const user = [
   { name: 'Josh', active: true },
   { name: 'Julia', active: false },
   { name: 'Bill', active: false },
 ];
 
-const messages = [
+const fakeMsgs = [
   { user: 'you', message: 'teste 123321' },
   {
     user: 'bill_murphy',
@@ -26,15 +42,17 @@ const messages = [
   { user: 'josh', message: 'teste 123321', remote: true },
 ];
 
-// open connection with server
-const socket = io('http://localhost:3000');
-
 function Room() {
+  const messages = useState(fakeMsgs);
+  const socket = useSocket('http://localhost:3000')
+
   useEffect(() => {
-    socket.on('received-message', data => {
-      console.log('message received:', data);
-    });
-  }, []);
+    if (socket) {
+      socket.on('received-message', data => {
+        console.log('message received:', data);
+      });
+    }
+  }, [socket]);
 
   function handleSentMsg(message) {
     socket.emit('send-message', { user: 'marcio_mendes', message });
@@ -48,7 +66,9 @@ function Room() {
         <Bottom>
           <Video id="local-video" width="250px" height="150px" />
           <OnlineUsers users={user} />
-          <Button width="150px">Logout</Button>
+          <Button onClick={() => { }} width="150px">
+            Logout
+          </Button>
         </Bottom>
       </Content>
     </Container>

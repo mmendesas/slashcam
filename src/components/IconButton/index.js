@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, number, element, func } from 'prop-types';
+import { string, number, func } from 'prop-types';
 
 import { Container } from './styles';
 
@@ -12,7 +12,7 @@ function IconButton({ Icon, color, size, onClick }) {
 }
 
 IconButton.propTypes = {
-  Icon: element.isRequired,
+  Icon: func.isRequired,
   color: string,
   size: number,
   onClick: func.isRequired,
