@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import useSocket from '../../hooks/useSocket';
 import useStore from '../../hooks/useStore';
@@ -20,22 +21,31 @@ const user = [
 
 function Room() {
   const [messages, setMessages] = useState([]);
-  const socket = useSocket('http://localhost:3000')
-  const globalState = useStore();
+  const socket = useSocket('http://localhost:3000');
+  const router = useRouter();
+  const [state, dispatch] = useStore();
 
-  console.log("ASDFDSAF", globalState);
+  const { auth } = state;
 
   useEffect(() => {
+    if (!auth.signed) {
+      router.push("/login");
+    }
+
     if (socket) {
       socket.on('received-message', data => {
         console.log('message received:', data);
         setMessages([...messages, data]);
       });
     }
-  }, [socket]);
+  }, [messages, socket]);
 
   function handleSentMsg(message) {
     socket.emit('send-message', { user: 'marcio_mendes', message });
+  }
+
+  if (!auth.signed) {
+    return <div>Loading...</div>;
   }
 
   return (
