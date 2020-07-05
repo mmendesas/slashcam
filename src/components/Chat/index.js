@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useRef} from 'react';
 
-import { Container, Header, Text, Content, Footer } from './styles';
+import { Container, Header, Text, Content, Footer, Info } from './styles';
 
 import Input from '../Input';
 import Button from '../Button';
 import Message from '../Message';
 
-function Chat({ messages = [], onSentMsg }) {
+function Chat({ data, onSentMsg }) {
+  const ref = useRef(null);
+  const { messages = [], user = {} } = data;
   const [msg, setMsg] = useState('');
 
   const handleSubmit = () => {
@@ -16,30 +19,35 @@ function Chat({ messages = [], onSentMsg }) {
     }
   };
 
-  const handleKeyDown = e => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
+  const handleKeyDown = ({ key }) => {
+    if (key === 'Enter') handleSubmit();
   };
 
   return (
-    <Container>
+    <Container ref={ref}>
       <Header>
         <div>
-          <Text>marcio_mendes</Text>
+          <Text>{user?.username}</Text>
           <Text color="#f8a832">online: 4</Text>
         </div>
-        <Text>room: 123</Text>
+        <Text>room: {user?.room}</Text>
       </Header>
       <Content>
-        {messages.map(({ user, message, remote }, idx) => (
-          <Message
-            key={`${user}-${idx}`}
-            user={user}
-            message={message}
-            remote={remote}
-          />
-        ))}
+        <ul>
+          {messages.map(({ user: from, message }, idx) => {
+            const ref = React.createRef();
+            return (
+              <Message
+                key={`${idx}`}
+                ref={ref}
+                user={from}
+                message={message}
+                remote={user?.username !== from}
+              />
+            );
+          })}
+        </ul>
+        <Info>grosa</Info>
       </Content>
       <Footer>
         <Input

@@ -37,8 +37,6 @@ function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('clicou');
-
     if (username === '' || room === '') {
       console.error('Fill the fields');
     }

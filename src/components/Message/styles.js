@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.li`
   color: ${props => (props.remote ? '#979494' : '#fff')};
   max-width: 200px;
   min-height: 40px;

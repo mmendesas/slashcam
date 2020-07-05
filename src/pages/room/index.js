@@ -23,25 +23,28 @@ function Room() {
   const [messages, setMessages] = useState([]);
   const socket = useSocket('http://localhost:3000');
   const router = useRouter();
-  const [state, dispatch] = useStore();
+  const [state] = useStore();
 
   const { auth } = state;
 
   useEffect(() => {
     if (!auth.signed) {
-      router.push("/login");
+      router.push('/login');
     }
+  }, [auth.signed, router]);
 
+  useEffect(() => {
     if (socket) {
       socket.on('received-message', data => {
-        console.log('message received:', data);
         setMessages([...messages, data]);
       });
     }
   }, [messages, socket]);
 
   function handleSentMsg(message) {
-    socket.emit('send-message', { user: 'marcio_mendes', message });
+    const data = { user: auth.user.username, message };
+    setMessages([...messages, data]);
+    socket.emit('send-message', data);
   }
 
   if (!auth.signed) {
@@ -50,13 +53,13 @@ function Room() {
 
   return (
     <Container>
-      <Chat messages={messages} onSentMsg={handleSentMsg} />
+      <Chat data={{ messages, user: auth.user }} onSentMsg={handleSentMsg} />
       <Content>
         <Video id="remote-video" width="800px" height="430px" />
         <Bottom>
           <Video id="local-video" width="250px" height="150px" />
           <OnlineUsers users={user} />
-          <Button onClick={() => { }} width="150px">
+          <Button onClick={() => {}} width="150px">
             Logout
           </Button>
         </Bottom>

@@ -22,13 +22,18 @@ export const Text = styled.div`
   font-size: 16px;
 `;
 
-export const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-
+export const Content = styled.section`
   flex: 1;
   background-color: #fff7ec;
   padding: 10px;
+  position: relative;
+  overflow-y: scroll;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
 `;
 
 export const Footer = styled.div`
@@ -48,4 +53,16 @@ export const Footer = styled.div`
     margin-right: 10px;
     width: 215px;
   }
+`;
+
+export const Info = styled.span`
+  position: absolute;
+  bottom: 10px;
+  align-self: center;
+  font-style: italic;
+  font-weight: bold;
+  color: #f8a832;
+  transition: opacity 2s ease-in-out;
+
+  opacity: ${props => (props.fadein ? 1 : 0)};
 `;
