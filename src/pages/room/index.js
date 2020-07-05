@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import useSocket from '../../hooks/useSocket';
+import useStore from '../../hooks/useStore';
 
 import Chat from '../../components/Chat';
 import Video from '../../components/Video';
@@ -11,8 +12,6 @@ import { Container, Content, Bottom } from './styles';
 
 import OnlineUsers from '../../components/OnlineUsers';
 
-
-
 const user = [
   { name: 'Josh', active: true },
   { name: 'Julia', active: false },
@@ -22,6 +21,9 @@ const user = [
 function Room() {
   const [messages, setMessages] = useState([]);
   const socket = useSocket('http://localhost:3000')
+  const globalState = useStore();
+
+  console.log("ASDFDSAF", globalState);
 
   useEffect(() => {
     if (socket) {

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import useSocket from '../../hooks/useSocket';
+import useStore from '../../hooks/useStore';
+
+import { login } from '../../store/modules/auth/actions';
 
 import { Container, Content, FormContent, Title, Form } from './styles';
 
@@ -13,6 +16,8 @@ import Video from '../../components/Video';
 function Login() {
   const router = useRouter();
   const socket = useSocket('http://localhost:3000');
+  const [state, dispatch] = useStore();
+
   const [username, setUsername] = useState('');
   const [room, setRoom] = useState('');
 
@@ -24,7 +29,8 @@ function Login() {
 
       socket.on('user_joined', data => {
         console.log("user logged", data);
-        router.push('/Room')
+        dispatch(login(data));
+        router.push('/room');
       });
     }
   }, [socket]);
