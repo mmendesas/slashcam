@@ -1,5 +1,6 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
-import React, { useState, useRef} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Container, Header, Text, Content, Footer, Info } from './styles';
 
@@ -8,9 +9,17 @@ import Button from '../Button';
 import Message from '../Message';
 
 function Chat({ data, onSentMsg }) {
-  const ref = useRef(null);
   const { messages = [], user = {} } = data;
   const [msg, setMsg] = useState('');
+
+  const scrollToMyRef = () => {
+    const lastItem = document.querySelector('.list-messages > li:last-child');
+    if (lastItem) lastItem.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToMyRef();
+  }, [messages]);
 
   const handleSubmit = () => {
     if (msg !== '') {
@@ -24,7 +33,7 @@ function Chat({ data, onSentMsg }) {
   };
 
   return (
-    <Container ref={ref}>
+    <Container>
       <Header>
         <div>
           <Text>{user?.username}</Text>
@@ -33,13 +42,11 @@ function Chat({ data, onSentMsg }) {
         <Text>room: {user?.room}</Text>
       </Header>
       <Content>
-        <ul>
+        <ul className="list-messages">
           {messages.map(({ user: from, message }, idx) => {
-            const ref = React.createRef();
             return (
               <Message
                 key={`${idx}`}
-                ref={ref}
                 user={from}
                 message={message}
                 remote={user?.username !== from}
