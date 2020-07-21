@@ -13,8 +13,8 @@ const CONSTRAINTS = {
 };
 
 function Video({ ...props }) {
-  const [micOn, setMicOn] = useState(false);
-  const [videoOn, setVideoOn] = useState(false);
+  const [micOn, setMicOn] = useState(true);
+  const [videoOn, setVideoOn] = useState(true);
   const videoRef = useRef();
   const mediaStream = useUserMedia(CONSTRAINTS);
 
@@ -24,6 +24,22 @@ function Video({ ...props }) {
 
   function handleCanPlay() {
     videoRef.current.play();
+  }
+
+  function handleAudioToggle() {
+    setMicOn(!micOn);
+    const audioTracks = mediaStream.getAudioTracks();
+    for (let i = 0; i < audioTracks.length; ++i) {
+      audioTracks[i].enabled = !audioTracks[i].enabled;
+    }
+  }
+
+  function handleVideoToggle() {
+    setVideoOn(!videoOn);
+    const videoTracks = mediaStream.getVideoTracks();
+    for (let i = 0; i < videoTracks.length; ++i) {
+      videoTracks[i].enabled = !videoTracks[i].enabled;
+    }
   }
 
   return (
@@ -40,13 +56,13 @@ function Video({ ...props }) {
           Icon={micOn ? MdMic : MdMicOff}
           color="#f8a832"
           size={32}
-          onClick={() => setMicOn(!micOn)}
+          onClick={handleAudioToggle}
         />
         <IconButton
           Icon={videoOn ? MdVideocam : MdVideocamOff}
           color="#f8a832"
           size={32}
-          onClick={() => setVideoOn(!videoOn)}
+          onClick={handleVideoToggle}
         />
       </Options>
     </Container>
