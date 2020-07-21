@@ -9,6 +9,11 @@ export const Container = styled.div`
   border-radius: 20px;
 `;
 
+export const Camera = styled.video`
+  height: 100%;
+  border-radius: 20px;
+`;
+
 export const Options = styled.div`
   position: absolute;
   bottom: 10px;

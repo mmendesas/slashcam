@@ -28,12 +28,12 @@ function Login() {
       });
 
       socket.on('user_joined', data => {
-        console.log("user logged", data);
+        console.log('user logged', data);
         dispatch(login(data));
         router.push('/room');
       });
     }
-  }, [socket]);
+  }, [dispatch, router, socket]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -48,7 +48,7 @@ function Login() {
     <Container>
       <Logo />
       <Content>
-        {/* <Video width="670px" height="401px" /> */}
+        <Video width="450px" height="336px" />
         <FormContent>
           <Title>Enter the room and enjoy it!</Title>
           <Form>
